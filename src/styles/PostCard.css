@@ -1,0 +1,141 @@
+.post-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  margin: 20px auto;
+  max-width: 500px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.post-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.post-header {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.user-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.avatar-name {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.datetime {
+  font-size: 13px;
+  color: #888;
+}
+
+.options-menu-wrapper {
+  position: relative;
+  margin-left: 10px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 10;
+  width: 140px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-item svg {
+  margin-right: 8px;
+}
+
+.post-image img {
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+.post-caption {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.post-actions {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 16px;
+}
+
+.post-actions span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.post-actions span:hover {
+  color: #007bff;
+}
+@media (max-width: 600px) {
+  .post-card {
+    margin: 10px;
+    padding: 12px;
+  }
+
+  .post-actions {
+    font-size: 14px;
+  }
+
+  .user-name {
+    font-size: 14px;
+  }
+}
