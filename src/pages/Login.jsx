@@ -105,9 +105,7 @@ const Login = () => {
                 {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
               </span>
             </div>
-            <span className="error-message">
-              {error?.password ? error?.password : null}
-            </span>
+            <span className="error-message">{error?.password}</span>
           </div>
 
           <button

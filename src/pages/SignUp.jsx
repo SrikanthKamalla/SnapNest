@@ -65,7 +65,7 @@ const SignUp = () => {
         setIsSubmitting(false);
         return;
       }
-
+      //create asyn thunk for signup function in userslice
       toast.success("Signup successful!");
       dispatch(
         setUser({
@@ -156,8 +156,6 @@ const SignUp = () => {
           </div>
         </form>
       </div>
-
-      {/* Modal */}
       <Modal
         isOpen={isSubmitting}
         contentLabel="Loading"
