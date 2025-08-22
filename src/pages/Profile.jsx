@@ -1,18 +1,18 @@
-import React from "react";
 import { useState, useEffect } from "react";
-import { getuserInfo, updateUser } from "../service/user";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+
+import { getuserInfo, updateUser } from "../service/user";
+import { fetchUpdatedUser, resetStatus } from "../../toolkit/userSlice";
+
 import image from "../assets/image.png";
 import "../styles/Profile.css";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUpdatedUser, resetStatus } from "../../toolkit/userSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const { loading, user, message, success } = useSelector(
     (state) => state.user
   );
-  console.log("usernameeeeeeeeeeeee", user.name);
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -24,6 +24,7 @@ const Profile = () => {
       name: e.target.value,
     });
   };
+  console.time("Initial Render");
 
   useEffect(() => {
     if (user?.name && user?.email) {
@@ -34,6 +35,7 @@ const Profile = () => {
     }
   }, [user]);
 
+  console.timeEnd("Initial Render");
   useEffect(() => {
     if (success) {
       toast.success(message || "Profile updated successfully");
@@ -44,7 +46,6 @@ const Profile = () => {
   }, [success, message]);
 
   const handleUpdateUser = () => {
-    console.log("rerender");
     if (!profile.name.trim()) {
       toast.warning("Username can't be empty");
       return;

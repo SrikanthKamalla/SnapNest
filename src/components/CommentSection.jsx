@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDeleteComment } from "../../toolkit/commentSlice.js";
 
 const CommentSection = ({ postId, comments, handleGetComment }) => {
-  // console.log("comments", comments);
   const [input, setInput] = useState("");
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -65,7 +64,9 @@ const CommentSection = ({ postId, comments, handleGetComment }) => {
     } else if (diffMinutes > 0) {
       return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
     } else {
-      return `${diffSeconds} second${diffSeconds !== 1 ? "s" : ""} ago`;
+      return `${diffSeconds >= 1 ? diffSeconds : 1} second${
+        diffSeconds !== 1 ? "s" : ""
+      } ago`;
     }
   }
 

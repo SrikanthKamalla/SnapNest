@@ -1,18 +1,21 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import SignUp from "./pages/SignUp";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Modal from "react-modal";
-import ProtectedRoute from "./hoc/WithAuth";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { getuserInfo } from "./service/user";
-import CreatePost from "./pages/CreatePost";
-import Profile from "./pages/Profile";
-import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import { fetchUser } from "../toolkit/userSlice";
+import { ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./hoc/WithAuth";
+import "./App.css";
+import Modal from "react-modal";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
+// import Home from "./pages/Home";
+const Home = React.lazy(() => import("./pages/Home"));
+// import CreatePost from "./pages/CreatePost";
+const CreatePost = React.lazy(() => import("./pages/CreatePost"));
+// import Profile from "./pages/Profile";
+const Profile = React.lazy(() => import("./pages/Profile"));
 
 Modal.setAppElement("#root");
 function App() {

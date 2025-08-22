@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, lazy, Suspense } from "react";
 import {
   FaComment,
   FaEdit,
@@ -11,7 +11,6 @@ import { CgDetailsMore, CgMoreVertical } from "react-icons/cg";
 import "../styles/PostCard.css";
 import { deletePost, likePost, unLikePost } from "../service/post";
 import { useNavigate } from "react-router-dom";
-import CommentSection from "./CommentSection";
 import { getCommentsByPostId } from "../service/Comment";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,6 +18,8 @@ import {
   likePosts,
   unLikePosts,
 } from "../../toolkit/postSlice";
+
+const CommentSection = lazy(() => import("./CommentSection"));
 
 const PostCard = ({ post, reFetch }) => {
   const [showOptions, setShowOptions] = useState(false);
@@ -148,11 +149,13 @@ const PostCard = ({ post, reFetch }) => {
         </span>
       </div>
       {showCommentSection && (
-        <CommentSection
-          postId={post._id}
-          comments={comments}
-          handleGetComment={handleGetComment}
-        />
+        <Suspense fallback={<div className="comment-text">Loading...</div>}>
+          <CommentSection
+            postId={post._id}
+            comments={comments}
+            handleGetComment={handleGetComment}
+          />
+        </Suspense>
       )}
     </div>
   );

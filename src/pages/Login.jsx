@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { fetchUserLogin } from "../../toolkit/userSlice";
 import { useNavigate } from "react-router-dom";
 
+import LoadingModal from "../components/LoadingModal";
 const Login = () => {
   let initial = { email: "", password: "" };
   const [loginUser, setLoginUser] = useState(initial);
@@ -37,6 +38,38 @@ const Login = () => {
     validateField(name, value);
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const hasErrors = Object.values(loginUser).some((v) => !v);
+  //   Object.entries(loginUser).forEach(([key, value]) =>
+  //     validateField(key, value)
+  //   );
+  //   if (hasErrors) {
+  //     toast.error("Please fill all the required details");
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   const resultAction = await dispatch(
+  //     fetchUserLogin({ userLogin, loginUser })
+  //   );
+  //   console.log("resultAction", resultAction.payload);
+
+  //   if (fetchUserLogin.fulfilled.match(resultAction)) {
+  //     setLoginUser(initial);
+  //     setIsSubmitting(false);
+  //     navigate("/");
+  //     if (resultAction.payload.success) {
+  //       toast.success(resultAction.payload.message);
+  //     }
+  //   } else {
+  //     const errorMessage = resultAction.payload?.message || "Login failed";
+  //     toast.error(errorMessage);
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -50,21 +83,28 @@ const Login = () => {
     }
 
     setIsSubmitting(true);
-    const resultAction = await dispatch(
-      fetchUserLogin({ userLogin, loginUser })
-    );
-    console.log("resultAction", resultAction.payload);
 
-    if (fetchUserLogin.fulfilled.match(resultAction)) {
-      setLoginUser(initial);
-      setIsSubmitting(false);
-      navigate("/");
-      if (resultAction.payload.success) {
-        toast.success(resultAction.payload.message);
+    try {
+      const resultAction = await dispatch(
+        fetchUserLogin({ userLogin, loginUser })
+      );
+      console.log("resultAction", resultAction);
+
+      if (fetchUserLogin.fulfilled.match(resultAction)) {
+        if (resultAction.payload.success) {
+          toast.success(resultAction.payload.message);
+          setLoginUser(initial);
+          navigate("/");
+        } else {
+          toast.error(resultAction.payload.message || "Login failed");
+        }
+      } else {
+        toast.error(resultAction.payload?.message || "Login failed");
       }
-    } else {
-      const errorMessage = resultAction.payload?.message || "Login failed";
-      toast.error(errorMessage);
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast.error("Something went wrong");
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -125,20 +165,7 @@ const Login = () => {
         </form>
       </div>
 
-      <Modal
-        isOpen={isSubmitting}
-        contentLabel="Loading"
-        className="login-modal"
-        overlayClassName="login-modal-overlay"
-      >
-        <LineWave
-          visible={true}
-          height="100"
-          width="100"
-          color="#2c3e50"
-          ariaLabel="line-wave-loading"
-        />
-      </Modal>
+      <LoadingModal isSubmitting={isSubmitting} />
     </div>
   );
 };

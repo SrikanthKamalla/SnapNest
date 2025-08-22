@@ -6,7 +6,7 @@ export const fileUpload = (data) =>
     headers: {
       "Content-Type": "multipart/form-data",
     },
-    withCredentials: true,
+    withCredentials: false,
   });
 
 export const createPost = (payload) =>

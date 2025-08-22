@@ -1,0 +1,62 @@
+/* Animation */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Container base */
+.skeleton-card * {
+  background-color: #ddd;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Avatar */
+.skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Text lines */
+.skeleton-line {
+  height: 12px;
+  margin: 4px 0;
+  background-color: #ccc;
+  border-radius: 4px;
+}
+.skeleton-line.short {
+  width: 120px;
+}
+.skeleton-line.smaller {
+  width: 80px;
+  height: 10px;
+}
+.skeleton-line.tiny {
+  width: 24px;
+  height: 10px;
+}
+
+/* Image */
+.skeleton-image {
+  width: 100%;
+  height: 250px;
+  background-color: #ccc;
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+/* Icons */
+.skeleton-icon {
+  width: 24px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 6px;
+}

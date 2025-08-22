@@ -15,15 +15,35 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async (func) => {
   const response = await func();
   return response.data.data.user;
 });
+// export const fetchUserLogin = createAsyncThunk(
+//   "user/fetchUserLogin",
+//   async ({ userLogin, loginUser }) => {
+//     const response = await userLogin(loginUser);
+//     console.log(response?.data?.data?.token);
+//     saveToLocalStorage(response?.data?.data?.token);
+//     return response.data;
+//   }
+// );
+
+// import { createAsyncThunk } from "@reduxjs/toolkit";
+
 export const fetchUserLogin = createAsyncThunk(
   "user/fetchUserLogin",
-  async ({ userLogin, loginUser }) => {
-    const response = await userLogin(loginUser);
-    console.log(response?.data?.data?.token);
-    saveToLocalStorage(response?.data?.data?.token);
-    return response.data;
+  async ({ userLogin, loginUser }, thunkAPI) => {
+    try {
+      const response = await userLogin(loginUser);
+      console.log(response?.data?.data?.token);
+      saveToLocalStorage(response?.data?.data?.token);
+      return response.data;
+    } catch (error) {
+      console.error("Login failed:", error);
+      return thunkAPI.rejectWithValue({
+        message: error?.response?.data?.message || "Login failed",
+      });
+    }
   }
 );
+
 export const fetchUpdatedUser = createAsyncThunk(
   "user/fetchUpdatedUser",
   async ({ func, name }) => {
@@ -52,6 +72,9 @@ const userSlice = createSlice({
       .addCase(fetchUserLogin.fulfilled, (state, action) => {
         const { name, email, _id } = action.payload.data;
         state.user = { name, email, userId: _id };
+        state.loading = false;
+      })
+      .addCase(fetchUserLogin.rejected, (state) => {
         state.loading = false;
       })
       .addCase(fetchUser.pending, (state) => {
