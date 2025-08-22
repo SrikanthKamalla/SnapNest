@@ -1,38 +1,39 @@
-import React, { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { LineWave } from "react-loader-spinner";
-import { toast } from "react-toastify";
-import Modal from "react-modal";
-import { userSignUp } from "../service/auth";
-import { saveToLocalStorage } from "../helpers/localstorage";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../toolkit/userSlice";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import BeatLoader from 'react-spinners/BeatLoader';
+import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../toolkit/userSlice';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { userSignUp } from '../service/auth';
+import { saveToLocalStorage } from '../helpers/localstorage';
+import '../styles/login.css';
 
 const SignUp = () => {
-  const initial = {
-    name: "",
-    email: "",
-    password: "",
-  };
+  const initial = { name: '', email: '', password: '' };
   const [signUpUser, setSignUpUser] = useState(initial);
   const [error, setError] = useState(initial);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectPath = location.state?.from || '/';
 
   const validateField = (name, value) => {
-    let message = "";
+    let message = '';
     if (!value) {
-      message = "This field is required";
-    } else if (name === "email") {
+      message = 'This field is required';
+    } else if (name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value)) {
-        message = "Please enter a valid email address";
+        message = 'Please enter a valid email address';
       }
-    } else if (name === "password" && value.length < 6) {
-      message = "Password must be at least 6 characters";
+    } else if (name === 'password' && value.length < 6) {
+      message = 'Password must be at least 6 characters';
     }
     setError((prev) => ({ ...prev, [name]: message }));
   };
@@ -52,7 +53,7 @@ const SignUp = () => {
     );
     const hasErrors = Object.values(signUpUser).some((val) => !val);
     if (hasErrors) {
-      toast.error("Please fill all the required details");
+      toast.error('Please fill all the required details');
       setIsSubmitting(false);
       return;
     }
@@ -61,12 +62,12 @@ const SignUp = () => {
       const response = await userSignUp(signUpUser);
 
       if (!response?.data?.success) {
-        toast.error(response?.data?.message || "Signup failed.");
+        toast.error(response?.data?.message || 'Signup failed.');
         setIsSubmitting(false);
         return;
       }
-      //create asyn thunk for signup function in userslice
-      toast.success("Signup successful!");
+
+      toast.success('Signup successful!');
       dispatch(
         setUser({
           name: response?.data?.data?.name,
@@ -75,13 +76,13 @@ const SignUp = () => {
         })
       );
 
-      navigate("/");
       saveToLocalStorage(response?.data?.data?.token);
+      navigate(redirectPath); // Redirect to original target
     } catch (error) {
       if (error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
-        toast.error("Something went wrong. Please try again.");
+        toast.error('Something went wrong. Please try again.');
       }
     } finally {
       setIsSubmitting(false);
@@ -124,7 +125,7 @@ const SignUp = () => {
             <div className="password-input-wrapper">
               <input
                 placeholder="Enter Password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 className="form-input password-input"
                 value={signUpUser.password}
                 name="password"
@@ -149,26 +150,25 @@ const SignUp = () => {
           </button>
 
           <div className="signup-link">
-            Already have an account?
-            <a href="/login" className="signup-anchor">
+            Already have an account?{' '}
+            <Link
+              to="/login"
+              className="signup-anchor"
+              state={{ from: redirectPath }}
+            >
               Log in
-            </a>
+            </Link>
           </div>
         </form>
       </div>
+
       <Modal
         isOpen={isSubmitting}
         contentLabel="Loading"
         className="login-modal"
         overlayClassName="login-modal-overlay"
       >
-        <LineWave
-          visible={true}
-          height="100"
-          width="100"
-          color="#2c3e50"
-          ariaLabel="line-wave-loading"
-        />
+        <BeatLoader color="#36d7b7" size={15} />
       </Modal>
     </div>
   );

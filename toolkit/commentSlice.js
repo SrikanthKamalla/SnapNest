@@ -1,18 +1,18 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
 };
 export const fetchDeleteComment = createAsyncThunk(
-  "comment/fetchDeleteComment",
+  'comment/fetchDeleteComment',
   async ({ deleteComment, commentId }) => {
     const resoponse = await deleteComment(commentId);
-    console.log("resoponse", resoponse.data);
+    console.log('resoponse', resoponse.data);
     return resoponse.data;
   }
 );
 const commentSlice = createSlice({
-  name: "comment",
+  name: 'comment',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

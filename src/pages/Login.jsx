@@ -1,32 +1,34 @@
-import React, { useState } from "react";
-import { LineWave } from "react-loader-spinner";
-import Modal from "react-modal";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { toast } from "react-toastify";
-import { userLogin } from "../service/auth";
-import "../styles/login.css";
-import { useDispatch } from "react-redux";
-import { fetchUserLogin } from "../../toolkit/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { fetchUserLogin } from '../../toolkit/userSlice';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import LoadingModal from '../components/LoadingModal';
+import '../styles/login.css';
+import { userLogin } from '../service/auth';
 
-import LoadingModal from "../components/LoadingModal";
 const Login = () => {
-  let initial = { email: "", password: "" };
+  const initial = { email: '', password: '' };
   const [loginUser, setLoginUser] = useState(initial);
   const [error, setError] = useState(initial);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
+  const redirectPath = location.state?.from || '/';
+
   const validateField = (name, value) => {
-    let message = "";
+    let message = '';
     if (!value) {
-      message = "This field is required";
-    } else if (name === "email") {
+      message = 'This field is required';
+    } else if (name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value)) {
-        message = "Please enter a valid email address";
+        message = 'Please enter a valid email address';
       }
     }
     setError((prev) => ({ ...prev, [name]: message }));
@@ -38,38 +40,6 @@ const Login = () => {
     validateField(name, value);
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const hasErrors = Object.values(loginUser).some((v) => !v);
-  //   Object.entries(loginUser).forEach(([key, value]) =>
-  //     validateField(key, value)
-  //   );
-  //   if (hasErrors) {
-  //     toast.error("Please fill all the required details");
-  //     return;
-  //   }
-
-  //   setIsSubmitting(true);
-  //   const resultAction = await dispatch(
-  //     fetchUserLogin({ userLogin, loginUser })
-  //   );
-  //   console.log("resultAction", resultAction.payload);
-
-  //   if (fetchUserLogin.fulfilled.match(resultAction)) {
-  //     setLoginUser(initial);
-  //     setIsSubmitting(false);
-  //     navigate("/");
-  //     if (resultAction.payload.success) {
-  //       toast.success(resultAction.payload.message);
-  //     }
-  //   } else {
-  //     const errorMessage = resultAction.payload?.message || "Login failed";
-  //     toast.error(errorMessage);
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -77,8 +47,9 @@ const Login = () => {
     Object.entries(loginUser).forEach(([key, value]) =>
       validateField(key, value)
     );
+
     if (hasErrors) {
-      toast.error("Please fill all the required details");
+      toast.error('Please fill all the required details');
       return;
     }
 
@@ -86,24 +57,27 @@ const Login = () => {
 
     try {
       const resultAction = await dispatch(
-        fetchUserLogin({ userLogin, loginUser })
+        fetchUserLogin({
+          email: loginUser.email,
+          password: loginUser.password,
+          userLogin,
+        })
       );
-      console.log("resultAction", resultAction);
 
       if (fetchUserLogin.fulfilled.match(resultAction)) {
         if (resultAction.payload.success) {
           toast.success(resultAction.payload.message);
           setLoginUser(initial);
-          navigate("/");
+          navigate(redirectPath); // Redirect to original target
         } else {
-          toast.error(resultAction.payload.message || "Login failed");
+          toast.error(resultAction.payload.message || 'Login failed');
         }
       } else {
-        toast.error(resultAction.payload?.message || "Login failed");
+        toast.error(resultAction.payload?.message || 'Login failed');
       }
     } catch (err) {
-      console.error("Unexpected error:", err);
-      toast.error("Something went wrong");
+      console.error('Unexpected error:', err);
+      toast.error('Something went wrong');
     } finally {
       setIsSubmitting(false);
     }
@@ -133,7 +107,7 @@ const Login = () => {
               <input
                 className="form-input password-input"
                 placeholder="Enter Password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 value={loginUser.password}
                 name="password"
                 onChange={handleOnChange}
@@ -153,14 +127,18 @@ const Login = () => {
             className="login-button"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Logging in..." : "Login"}
+            {isSubmitting ? 'Logging in...' : 'Login'}
           </button>
 
           <div className="signup-link">
-            Don't have an account?
-            <a href="/signup" className="signup-anchor">
+            Don't have an account?{' '}
+            <Link
+              to="/signup"
+              className="signup-anchor"
+              state={{ from: redirectPath }}
+            >
               Sign up
-            </a>
+            </Link>
           </div>
         </form>
       </div>

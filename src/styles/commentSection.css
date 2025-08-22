@@ -137,8 +137,8 @@
   .comment-item {
     grid-template-columns: min-content 1fr;
     grid-template-areas:
-      "avatar content"
-      ". actions";
+      'avatar content'
+      '. actions';
   }
 
   .comment-user {

@@ -1,6 +1,6 @@
-import React from "react";
-import Modal from "react-modal";
-import { LineWave } from "react-loader-spinner";
+import React from 'react';
+import Modal from 'react-modal';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 const LoadingModal = ({ isSubmitting }) => {
   return (
@@ -11,13 +11,7 @@ const LoadingModal = ({ isSubmitting }) => {
       overlayClassName="login-modal-overlay"
       ariaHideApp={false}
     >
-      <LineWave
-        visible={true}
-        height="100"
-        width="100"
-        color="#2c3e50"
-        ariaLabel="line-wave-loading"
-      />
+      <BeatLoader color="#36d7b7" size={15} />
     </Modal>
   );
 };

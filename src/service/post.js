@@ -1,10 +1,10 @@
-import { API_ENDPOINTS } from "./endpoints";
-import { axiosBaseInstance } from "../axios/instance";
+import { API_ENDPOINTS } from './endpoints';
+import { axiosBaseInstance } from '../axios/instance';
 
 export const fileUpload = (data) =>
   axiosBaseInstance.post(API_ENDPOINTS.FILE_UPLOAD, data, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
     withCredentials: false,
   });
@@ -27,10 +27,10 @@ export const getPostById = (postId) =>
   axiosBaseInstance.get(API_ENDPOINTS.GET_BY_POSTID(postId));
 
 export const likePost = (postId) =>
-  axiosBaseInstance.post(API_ENDPOINTS.LIKE_POST(postId), null);
+  axiosBaseInstance.put(API_ENDPOINTS.LIKE_POST(postId), null);
 
 export const unLikePost = (postId) =>
-  axiosBaseInstance.post(API_ENDPOINTS.UNLIKE_POST(postId), null);
+  axiosBaseInstance.put(API_ENDPOINTS.UNLIKE_POST(postId), null);
 
 export const viewPost = (postId) =>
   axiosBaseInstance.get(API_ENDPOINTS.VIEW_POST(postId));

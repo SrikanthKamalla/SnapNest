@@ -16,7 +16,8 @@
   max-width: 450px;
   min-width: 400px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15),
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   position: relative;
   z-index: 1;
@@ -130,7 +131,7 @@
 }
 
 .login-button::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
@@ -175,7 +176,7 @@
 }
 
 .signup-anchor::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -2px;
   left: 0;

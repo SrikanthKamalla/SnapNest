@@ -1,80 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { viewPost } from "../service/post";
-import { API_ENDPOINTS } from "../service/endpoints";
-import PostCard from "../components/PostCard";
-import CommentSection from "../components/CommentSection";
-import { FaComment, FaHeart, FaRegHeart, FaShare } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import PostCard from '../components/PostCard';
+import { getPostById } from '../service/post';
+import { toast } from 'react-toastify';
 
-const ViewPost = () => {
-  let postId = window.location.href.split("/").filter(Boolean).pop();
-
-  const { user } = useSelector((state) => state.user);
+const PostPage = () => {
+  const { id } = useParams();
   const [post, setPost] = useState(null);
-
-  const fetchViewPost = async () => {
-    try {
-      const { data } = await viewPost(postId);
-      console.log("Success:", data);
-      setPost(data);
-    } catch (err) {
-      console.error("❌ Error fetching post:", err.response?.data);
-      console.error("❗ Full error:", err);
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchViewPost();
-  }, []);
+    const fetchPost = async () => {
+      setLoading(true);
+      try {
+        const { data } = await getPostById(id);
+        setPost(data.data.post);
+      } catch (err) {
+        console.error('Failed to fetch post:', err);
+        toast.error('Post not found or failed to load.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, [id]);
+
+  if (loading) return <div>Loading post...</div>;
+  if (!post) return <div>Post not found.</div>;
 
   return (
-    <div>
-      <div className="post-card">
-        <div className="post-header">
-          <div className="user-info">
-            <div className="avatar-name">
-              <div className="user-avatar user-initials"></div>
-              <div className="user-name">Name</div>
-            </div>
-          </div>
-          <div className="datetime">{post?.createdAt?.split("T")[0]}</div>
-        </div>
-
-        <div className="post-image">
-          <img src={post?.image} alt="post" />
-        </div>
-        <div className="post-caption">
-          <p>{post?.text}</p>
-        </div>
-
-        <div className="post-actions">
-          {post?.likes?.includes(user?.userId) ? (
-            <span>
-              <FaHeart /> ({post?.likesCount})
-            </span>
-          ) : (
-            <span>
-              <FaRegHeart /> ({post?.likesCount})
-            </span>
-          )}
-
-          <span>
-            <FaComment />
-          </span>
-          <span>
-            <FaShare />
-          </span>
-        </div>
-        {/* {showCommentSection && (
-          <CommentSection
-            postId={post._id}
-            comments={comments}
-            handleGetComment={handleGetComment}
-          />
-        )} */}
-      </div>
+    <div style={{ maxWidth: '600px', margin: '20px auto' }}>
+      <PostCard post={post} reFetch={() => {}} isSingleView={true} />
     </div>
   );
 };
 
-export default ViewPost;
+export default PostPage;

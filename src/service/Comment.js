@@ -1,5 +1,5 @@
-import { API_ENDPOINTS } from "./endpoints";
-import { axiosBaseInstance } from "../axios/instance";
+import { API_ENDPOINTS } from './endpoints';
+import { axiosBaseInstance } from '../axios/instance';
 
 export const addComment = (postId, payload) =>
   axiosBaseInstance.post(API_ENDPOINTS.ADD_COMMENT(postId), payload);

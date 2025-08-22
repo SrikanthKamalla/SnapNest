@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import { getuserInfo, updateUser } from "../service/user";
-import { fetchUpdatedUser, resetStatus } from "../../toolkit/userSlice";
+import { getuserInfo, updateUser } from '../service/user';
+import { fetchUpdatedUser, resetStatus } from '../../toolkit/userSlice';
 
-import image from "../assets/image.png";
-import "../styles/Profile.css";
+import image from '../assets/image.png';
+import '../styles/Profile.css';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -14,8 +14,8 @@ const Profile = () => {
     (state) => state.user
   );
   const [profile, setProfile] = useState({
-    name: "",
-    email: "",
+    name: '',
+    email: '',
   });
 
   const handleNameChange = (e) => {
@@ -24,7 +24,6 @@ const Profile = () => {
       name: e.target.value,
     });
   };
-  console.time("Initial Render");
 
   useEffect(() => {
     if (user?.name && user?.email) {
@@ -35,15 +34,14 @@ const Profile = () => {
     }
   }, [user]);
 
-  console.timeEnd("Initial Render");
   useEffect(() => {
     if (success) {
-      toast.success(message || "Profile updated successfully");
+      toast.success(message || 'Profile updated successfully');
     } else if (message && !success) {
       toast.error(message);
     }
     dispatch(resetStatus());
-  }, [success, message]);
+  }, [success, message, dispatch]);
 
   const handleUpdateUser = () => {
     if (!profile.name.trim()) {
@@ -51,7 +49,7 @@ const Profile = () => {
       return;
     }
     if (user?.name == profile?.name) {
-      toast.warning("Please update the details");
+      toast.warning('Please update the details');
       return;
     }
 

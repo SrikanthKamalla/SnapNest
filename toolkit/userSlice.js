@@ -1,59 +1,63 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { saveToLocalStorage } from "../src/helpers/localstorage";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { saveToLocalStorage } from '../src/helpers/localstorage';
 const initialState = {
   loading: false,
   user: {
-    name: "",
-    email: "",
-    userId: "",
+    name: '',
+    email: '',
+    userId: '',
   },
-  message: "",
+  message: '',
   success: false,
 };
 
-export const fetchUser = createAsyncThunk("user/fetchUser", async (func) => {
+export const fetchUser = createAsyncThunk('user/fetchUser', async (func) => {
   const response = await func();
   return response.data.data.user;
 });
+
 // export const fetchUserLogin = createAsyncThunk(
-//   "user/fetchUserLogin",
-//   async ({ userLogin, loginUser }) => {
-//     const response = await userLogin(loginUser);
-//     console.log(response?.data?.data?.token);
-//     saveToLocalStorage(response?.data?.data?.token);
-//     return response.data;
+//   'user/fetchUserLogin',
+//   async ({ userLogin, loginUser }, thunkAPI) => {
+//     try {
+//       const response = await userLogin(loginUser);
+//       saveToLocalStorage(response?.data?.data?.token);
+//       return response.data;
+//     } catch (error) {
+//       console.error('Login failed:', error);
+//       return thunkAPI.rejectWithValue({
+//         message: error?.response?.data?.message || 'Login failed',
+//       });
+//     }
 //   }
 // );
 
-// import { createAsyncThunk } from "@reduxjs/toolkit";
-
 export const fetchUserLogin = createAsyncThunk(
-  "user/fetchUserLogin",
-  async ({ userLogin, loginUser }, thunkAPI) => {
+  'user/fetchUserLogin',
+  async ({ email, password, userLogin }, thunkAPI) => {
     try {
-      const response = await userLogin(loginUser);
-      console.log(response?.data?.data?.token);
+      const response = await userLogin({ email, password });
       saveToLocalStorage(response?.data?.data?.token);
       return response.data;
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error('Login failed:', error);
       return thunkAPI.rejectWithValue({
-        message: error?.response?.data?.message || "Login failed",
+        message: error?.response?.data?.message || 'Login failed',
       });
     }
   }
 );
 
 export const fetchUpdatedUser = createAsyncThunk(
-  "user/fetchUpdatedUser",
+  'user/fetchUpdatedUser',
   async ({ func, name }) => {
     const response = await func(name);
-    return response.data;
+    return response.data.data.user;
   }
 );
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -61,7 +65,7 @@ const userSlice = createSlice({
     },
     resetStatus: (state) => {
       state.success = false;
-      state.message = "";
+      state.message = '';
     },
   },
   extraReducers: (builder) => {
@@ -89,12 +93,11 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUpdatedUser.fulfilled, (state, action) => {
-        console.log("fetchUpdatedUser action.payload", action.payload);
         const { message, success } = action.payload;
         state.success = success;
         state.message = message;
         state.loading = false;
-        const { name, email, _id } = action.payload.data;
+        const { name, email, _id } = action.payload;
         state.user = { name, email, userId: _id };
         state.loading = false;
       })

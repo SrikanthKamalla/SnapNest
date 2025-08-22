@@ -1,5 +1,5 @@
-import { API_ENDPOINTS } from "./endpoints";
-import { axiosBaseInstance } from "../axios/instance";
+import { API_ENDPOINTS } from './endpoints';
+import { axiosBaseInstance } from '../axios/instance';
 
 export const userSignUp = (data) =>
   axiosBaseInstance.post(API_ENDPOINTS.SIGN_UP, data);

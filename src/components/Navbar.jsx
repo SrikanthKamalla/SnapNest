@@ -1,59 +1,61 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { IoMenu, IoClose } from "react-icons/io5";
-import { userLogout } from "../service/auth";
-import { toast } from "react-toastify";
-import "../styles/navbar.css";
-import { getAuthToken } from "../helpers/localstorage";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../toolkit/userSlice";
-import logo from "../assets/Adobe Express - file.png";
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { IoMenu, IoClose } from 'react-icons/io5';
+import { toast } from 'react-toastify';
+import '../styles/navbar.css';
+import { getAuthToken } from '../helpers/localstorage';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser, setUser } from '../../toolkit/userSlice';
+import logo from '../assets/Adobe Express - file.png';
+import { getuserInfo } from '../service/user';
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = getAuthToken();
+  const { user } = useSelector((state) => state.user);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUser(getuserInfo));
+    }
+  }, [dispatch, token]);
+
   const navbarItems = [
-    { label: "Home", path: "/" },
-    { label: "Create Post", path: "/create-post" },
-    { label: "My Posts", path: "/my-posts" },
-    { label: "Profile", path: "/user-profile" },
+    { label: 'Home', path: '/' },
+    { label: 'Create Post', path: '/create-post' },
+    { label: 'My Posts', path: '/my-posts' },
+    { label: 'Profile', path: '/user-profile' },
   ];
-  const { user } = useSelector((state) => state.user);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    const token = getAuthToken();
-
     if (!token || !user) {
-      toast.error("Something went wrong!!");
+      toast.error('Something went wrong!!');
       return;
     }
 
     try {
-      const response = await userLogout();
-      if (!response?.data?.success) {
-        toast.error(response?.data?.message);
-        return;
-      }
+      // const response = await userLogout();
+      // if (!response?.data?.success) {
+      //   toast.error(response?.data?.message);
+      //   return;
+      // }
 
-      toast.success(response?.data?.message);
+      // toast.success(response?.data?.message);
+      toast.success('User logout successful');
       dispatch(setUser(null));
-      navigate("/login", { replace: true });
       localStorage.clear();
+      navigate('/login', { replace: true });
     } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Something went wrong");
+      console.error('Logout error:', error);
+      toast.error('Something went wrong');
     }
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <>
@@ -72,7 +74,7 @@ const Navbar = () => {
                 key={nav.path}
                 to={nav.path}
                 className={({ isActive }) =>
-                  isActive ? "nav-item active" : "nav-item"
+                  isActive ? 'nav-item active' : 'nav-item'
                 }
               >
                 {nav.label}
@@ -101,7 +103,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
+      <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
         <div className="mobile-menu-content">
           <div className="mobile-menu-header">
             <button onClick={closeMenu} className="close-btn">
@@ -121,7 +123,7 @@ const Navbar = () => {
                 key={nav.path}
                 to={nav.path}
                 className={({ isActive }) =>
-                  isActive ? "mobile-nav-item active" : "mobile-nav-item"
+                  isActive ? 'mobile-nav-item active' : 'mobile-nav-item'
                 }
                 onClick={closeMenu}
               >

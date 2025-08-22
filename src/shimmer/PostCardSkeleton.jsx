@@ -1,6 +1,6 @@
-import React from "react";
-import ContentLoader from "react-content-loader";
-import "../styles/PostCard.css";
+import React from 'react';
+import ContentLoader from 'react-content-loader';
+import '../styles/PostCard.css';
 
 const PostCardSkeleton = () => {
   return (

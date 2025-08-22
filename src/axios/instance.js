@@ -1,7 +1,7 @@
-import axios from "axios";
-import { getAuthToken } from "../helpers/localstorage";
+import axios from 'axios';
+import { getAuthToken } from '../helpers/localstorage';
 // const BASE_URL = "https://social-media-server-v1-awpt.onrender.com/api";
-const BASE_URL = "https://snapnest-server-fb3f.onrender.com/api";
+const BASE_URL = 'https://snapnest-server-fb3f.onrender.com/api';
 
 export const axiosBaseInstance = axios.create({
   baseURL: BASE_URL,
@@ -11,7 +11,7 @@ axiosBaseInstance.interceptors.request.use(
   function (config) {
     const token = getAuthToken();
     if (token) {
-      config.headers.Authorization = "Bearer " + token;
+      config.headers.Authorization = 'Bearer ' + token;
     }
     return config;
   },

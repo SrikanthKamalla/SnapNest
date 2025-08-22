@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { FaTrash } from "react-icons/fa";
-import { PiPaperPlaneRightFill } from "react-icons/pi";
-import { toast } from "react-toastify";
-import { addComment, deleteComment } from "../service/Comment.js";
-import "../styles/commentSection.css";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchDeleteComment } from "../../toolkit/commentSlice.js";
+import React, { useState } from 'react';
+import { FaTrash } from 'react-icons/fa';
+import { PiPaperPlaneRightFill } from 'react-icons/pi';
+import { toast } from 'react-toastify';
+import { addComment, deleteComment } from '../service/Comment.js';
+import '../styles/commentSection.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDeleteComment } from '../../toolkit/commentSlice.js';
 
 const CommentSection = ({ postId, comments, handleGetComment }) => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleAddComment = async () => {
     if (!input) {
-      toast.error("Please enter comment");
+      toast.error('Please enter comment');
       return;
     }
     try {
@@ -22,11 +22,11 @@ const CommentSection = ({ postId, comments, handleGetComment }) => {
       if (data.success) {
         toast.success(data.message);
       }
-      setInput("");
+      setInput('');
       handleGetComment();
     } catch (error) {
-      console.log("error", error);
-      toast.error("something went wrong");
+      console.log('error', error);
+      toast.error('something went wrong');
     }
   };
 
@@ -43,9 +43,9 @@ const CommentSection = ({ postId, comments, handleGetComment }) => {
 
   const getInitials = (name) => {
     return name
-      ?.split(" ")
+      ?.split(' ')
       ?.map((ele) => ele[0])
-      ?.join("");
+      ?.join('');
   };
 
   function timeAgo(pastTime) {
@@ -58,14 +58,14 @@ const CommentSection = ({ postId, comments, handleGetComment }) => {
     const diffDays = Math.floor(diffHours / 24);
 
     if (diffDays > 0) {
-      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+      return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
     } else if (diffHours > 0) {
-      return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+      return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
     } else if (diffMinutes > 0) {
-      return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
+      return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
     } else {
       return `${diffSeconds >= 1 ? diffSeconds : 1} second${
-        diffSeconds !== 1 ? "s" : ""
+        diffSeconds !== 1 ? 's' : ''
       } ago`;
     }
   }
