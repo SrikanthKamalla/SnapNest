@@ -122,9 +122,6 @@
   transition: color 0.2s ease;
 }
 
-.post-actions span:hover {
-  color: #007bff;
-}
 @media (max-width: 600px) {
   .post-card {
     margin: 10px;

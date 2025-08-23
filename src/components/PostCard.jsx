@@ -27,7 +27,7 @@ import {
 } from '../../toolkit/postSlice';
 import { toast } from 'react-toastify';
 
-const feUer = import.meta.env.VITE_FE_URL;
+const feUrl = import.meta.env.VITE_FE_URL;
 const CommentSection = lazy(() => import('./CommentSection'));
 
 const PostCard = ({ post, reFetch, isSingleView = false }) => {
@@ -39,7 +39,6 @@ const PostCard = ({ post, reFetch, isSingleView = false }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   const handleGetComment = useCallback(async () => {
     if (!post?._id) return;
     const { data } = await getCommentsByPostId(post?._id);
@@ -87,7 +86,7 @@ const PostCard = ({ post, reFetch, isSingleView = false }) => {
   };
 
   const handleCopy = async () => {
-    const url = `${feUer}post/${post._id}`;
+    const url = `${feUrl}post/${post._id}`;
     try {
       await navigator.clipboard.writeText(url);
       toast.success('Post link copied to clipboard!');
@@ -155,11 +154,12 @@ const PostCard = ({ post, reFetch, isSingleView = false }) => {
       <div className="post-actions">
         {post?.likes?.includes(user?.userId) ? (
           <span onClick={handleUnLike}>
-            <FaHeart /> ({post?.likesCount})
+            <FaHeart color="red" /> {post?.likesCount}
           </span>
         ) : (
           <span onClick={handleLike}>
-            <FaRegHeart /> ({post?.likesCount})
+            <FaRegHeart />
+            {post?.likesCount}
           </span>
         )}
 

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { getAuthToken } from '../helpers/localstorage';
-// const BASE_URL = "https://social-media-server-v1-awpt.onrender.com/api";
-const BASE_URL = 'https://snapnest-server-fb3f.onrender.com/api';
+const beUrl = import.meta.env.VITE_SERVER_URL;
+
+const BASE_URL = `${beUrl}/api`;
 
 export const axiosBaseInstance = axios.create({
   baseURL: BASE_URL,

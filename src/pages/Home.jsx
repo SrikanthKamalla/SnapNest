@@ -1,17 +1,25 @@
 import React, { useCallback, useEffect } from 'react';
-import Navbar from '../components/Navbar';
 import { getMyPosts, getPost } from '../service/post';
 import PostCard from '../components/PostCard';
 import '../styles/home.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, setPosts } from '../../toolkit/postSlice';
-import { ShimmerPostItem } from 'react-shimmer-effects';
 import PostCardSkeleton from '../shimmer/PostCardSkeleton';
 import { useLocation } from 'react-router-dom';
+import { fetchUser } from '../../toolkit/userSlice';
+import { getuserInfo } from '../service/user';
+import { getAuthToken } from '../helpers/localstorage';
 
 const Home = () => {
-  const { posts, loading } = useSelector((state) => state.post);
   const dispatch = useDispatch();
+  const token = getAuthToken();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUser(getuserInfo));
+    }
+  }, [dispatch, token]);
+  const { posts, loading } = useSelector((state) => state.post);
   const location = useLocation();
   const fetcherFunction = location.pathname.includes('/my-posts')
     ? getMyPosts

@@ -64,7 +64,6 @@ const PostUploadForm = () => {
   };
 
   const handlePost = async () => {
-    // console.log("id", id);
     if (currentMode === 'edit' && !file) {
       toast.error('Please change the image');
       return;
@@ -80,9 +79,9 @@ const PostUploadForm = () => {
       let uploadUrl = '';
       if (!file) return;
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('image', file);
       const response = await fileUpload(formData);
-      uploadUrl = response.data.data.file_url;
+      uploadUrl = response.data.data.image;
 
       const payload = {
         text: caption,
@@ -105,13 +104,11 @@ const PostUploadForm = () => {
         return;
       }
       const { data } = await createPost(payload);
-      console.log('data.success', data);
       toast.success(data?.message);
       setCaption('');
       handleFileRemove();
     } catch (error) {
-      console.log('err', error);
-      toast.error('Something went wrong. Please try again.');
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }

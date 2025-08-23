@@ -68,8 +68,7 @@ const postSlice = createSlice({
       .addCase(updatePostById.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updatePostById.rejected, (state, action) => {
-        console.log('failed', action.payload);
+      .addCase(updatePostById.rejected, (state) => {
         state.success = false;
       });
   },

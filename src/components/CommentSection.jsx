@@ -25,8 +25,7 @@ const CommentSection = ({ postId, comments, handleGetComment }) => {
       setInput('');
       handleGetComment();
     } catch (error) {
-      console.log('error', error);
-      toast.error('something went wrong');
+      toast.error(error.message);
     }
   };
 
