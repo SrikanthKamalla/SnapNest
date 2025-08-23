@@ -6,6 +6,7 @@ const BASE_URL = `${beUrl}/api`;
 
 export const axiosBaseInstance = axios.create({
   baseURL: BASE_URL,
+  withCredentials: false,
 });
 
 axiosBaseInstance.interceptors.request.use(
