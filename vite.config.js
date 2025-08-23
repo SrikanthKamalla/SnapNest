@@ -6,6 +6,6 @@ export default defineConfig({
   preview: {
     port: 5173,
     host: true,
-    allowedHosts: ['snapnest-y9vf.onrender.com'], // 👈 Add this line
+    allowedHosts: ['snapnest-a72n.onrender.com'], // 👈 Add this line
   },
 });
