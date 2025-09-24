@@ -13,24 +13,8 @@ const initialState = {
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (func) => {
   const response = await func();
-  return response.data.data.user;
+  return response.data.data;
 });
-
-// export const fetchUserLogin = createAsyncThunk(
-//   'user/fetchUserLogin',
-//   async ({ userLogin, loginUser }, thunkAPI) => {
-//     try {
-//       const response = await userLogin(loginUser);
-//       saveToLocalStorage(response?.data?.data?.token);
-//       return response.data;
-//     } catch (error) {
-//       console.error('Login failed:', error);
-//       return thunkAPI.rejectWithValue({
-//         message: error?.response?.data?.message || 'Login failed',
-//       });
-//     }
-//   }
-// );
 
 export const fetchUserLogin = createAsyncThunk(
   'user/fetchUserLogin',
