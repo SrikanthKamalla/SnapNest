@@ -1,9 +1,9 @@
 import React from 'react';
-// import { getuserInfo } from "./service/user";
+import { getuserInfo } from './service/user';
 import { Route, Routes } from 'react-router-dom';
-// import { fetchUser } from "../toolkit/userSlice";
+import { fetchUser } from '../toolkit/userSlice';
 import { ToastContainer } from 'react-toastify';
-// import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from './hoc/WithAuth';
 import './App.css';
@@ -18,6 +18,11 @@ const Profile = React.lazy(() => import('./pages/Profile'));
 
 Modal.setAppElement('#root');
 function App() {
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(fetchUser(getuserInfo));
+  });
+
   const routesArr = [
     {
       path: '/',
