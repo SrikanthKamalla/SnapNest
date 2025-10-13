@@ -2,15 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import '../styles/CreatePost.css';
 import { toast } from 'react-toastify';
-import {
-  createPost,
-  fileUpload,
-  getMyPosts,
-  updatePost,
-} from '../service/post';
+import { createPost, getMyPosts, updatePost } from '../service/post';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { updatePostById } from '../../toolkit/postSlice';
+import { updatePostById } from '../toolkit/postSlice';
 import { ClipLoader } from 'react-spinners';
 
 const PostUploadForm = () => {
@@ -19,18 +14,18 @@ const PostUploadForm = () => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const { posts, success, message } = useSelector((state) => state.post);
+  const { posts } = useSelector((state) => state.post);
 
   const currentMode = window.location.href.includes('/edit-post')
     ? 'edit'
     : 'add';
 
   const fetchPostById = useCallback(
-    async (postId) => {
+    (postId) => {
       const data = posts.find((post) => post._id === postId);
       if (data) {
         setCaption(data.text);
@@ -41,13 +36,11 @@ const PostUploadForm = () => {
   );
 
   useEffect(() => {
-    if (currentMode === 'add') {
-      setFile(null);
+    if (currentMode === 'edit') fetchPostById(id);
+    else {
       setCaption('');
-      return;
-    }
-    if (currentMode === 'edit') {
-      fetchPostById(id);
+      setFile(null);
+      setPreview(null);
     }
   }, [currentMode, fetchPostById, id]);
 
@@ -55,6 +48,7 @@ const PostUploadForm = () => {
     setPreview(null);
     setFile(null);
   };
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -64,49 +58,65 @@ const PostUploadForm = () => {
   };
 
   const handlePost = async () => {
-    if (currentMode === 'edit' && !file) {
-      toast.error('Please change the image');
+    if (!caption.trim()) {
+      toast.error('Please add a caption');
       return;
     }
 
-    if (!file || !caption.trim()) {
-      toast.error('Please fill all the fields');
+    if (currentMode === 'edit') {
+      const originalPost = posts.find((post) => post._id === id);
+
+      if (!originalPost) {
+        toast.error('Post not found');
+        return;
+      }
+
+      if (originalPost.text === caption) {
+        toast.info('No changes to save');
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const resultAction = await dispatch(
+          updatePostById({
+            id,
+            payload: { text: caption },
+            func: updatePost,
+            fetcherFunction: getMyPosts,
+          })
+        );
+
+        if (!resultAction.payload.success) {
+          toast.error(resultAction.payload.message);
+        } else {
+          toast.success(resultAction.payload.message);
+          navigate('/my-posts');
+        }
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    if (!file) {
+      toast.error('Please upload an image');
       return;
     }
 
     setIsLoading(true);
     try {
-      let uploadUrl = '';
-      if (!file) return;
       const formData = new FormData();
+      formData.append('text', caption);
       formData.append('image', file);
-      const response = await fileUpload(formData);
-      uploadUrl = response.data.data.image;
 
-      const payload = {
-        text: caption,
-        image: uploadUrl,
-      };
-      if (currentMode === 'edit') {
-        dispatch(
-          updatePostById({
-            payload: payload,
-            id: id,
-            func: updatePost,
-            fetcherFunction: getMyPosts,
-          })
-        );
-        if (!success) return;
-        toast.success(message);
-        setCaption('');
-        handleFileRemove();
-        navigate('/my-posts');
-        return;
-      }
-      const { data } = await createPost(payload);
+      const { data } = await createPost(formData);
       toast.success(data?.message);
       setCaption('');
       handleFileRemove();
+      navigate('/my-posts');
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -120,23 +130,30 @@ const PostUploadForm = () => {
         {preview ? (
           <div className="image-preview">
             <img src={preview} alt="preview" />
-            <FaTimes className="image-remove-btn" onClick={handleFileRemove} />
+            {currentMode === 'add' && (
+              <FaTimes
+                className="image-remove-btn"
+                onClick={handleFileRemove}
+              />
+            )}
           </div>
         ) : (
           <div
             className="image-add-btn"
-            onClick={() => inputRef.current.click()}
+            onClick={() => currentMode === 'add' && inputRef.current.click()}
           >
             <FaPlus size={30} className="add-button" />
           </div>
         )}
-        <input
-          type="file"
-          accept="image/*"
-          hidden
-          ref={inputRef}
-          onChange={handleFileChange}
-        />
+        {currentMode === 'add' && (
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            ref={inputRef}
+            onChange={handleFileChange}
+          />
+        )}
       </div>
       <textarea
         placeholder="Write a caption..."

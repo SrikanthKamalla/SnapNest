@@ -1,7 +1,7 @@
 import React from 'react';
-import { getuserInfo } from './service/user';
+import { getUserInfo } from './service/user';
 import { Route, Routes } from 'react-router-dom';
-import { fetchUser } from '../toolkit/userSlice';
+import { fetchUser } from './toolkit/userSlice';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,7 +11,6 @@ import Modal from 'react-modal';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import PostPage from './pages/ViewPost';
-// import { getAuthToken } from "./helpers/localstorage";
 const Home = React.lazy(() => import('./pages/Home'));
 const CreatePost = React.lazy(() => import('./pages/CreatePost'));
 const Profile = React.lazy(() => import('./pages/Profile'));
@@ -20,7 +19,7 @@ Modal.setAppElement('#root');
 function App() {
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(fetchUser(getuserInfo));
+    dispatch(fetchUser(getUserInfo));
   });
 
   const routesArr = [

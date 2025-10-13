@@ -5,9 +5,9 @@ import { toast } from 'react-toastify';
 import '../styles/navbar.css';
 import { getAuthToken } from '../helpers/localstorage';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser, setUser } from '../../toolkit/userSlice';
+import { fetchUser, setUser } from '../toolkit/userSlice';
 import logo from '../assets/Adobe Express - file.png';
-import { getuserInfo } from '../service/user';
+import { getUserInfo } from '../service/user';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchUser(getuserInfo));
+      dispatch(fetchUser(getUserInfo));
     }
   }, [dispatch, token]);
 
@@ -37,13 +37,6 @@ const Navbar = () => {
     }
 
     try {
-      // const response = await userLogout();
-      // if (!response?.data?.success) {
-      //   toast.error(response?.data?.message);
-      //   return;
-      // }
-
-      // toast.success(response?.data?.message);
       toast.success('User logout successful');
       dispatch(setUser(null));
       localStorage.clear();

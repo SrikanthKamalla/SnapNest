@@ -3,11 +3,11 @@ import { getMyPosts, getPost } from '../service/post';
 import PostCard from '../components/PostCard';
 import '../styles/home.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, setPosts } from '../../toolkit/postSlice';
+import { fetchPosts, setPosts } from '../toolkit/postSlice';
 import PostCardSkeleton from '../shimmer/PostCardSkeleton';
 import { useLocation } from 'react-router-dom';
-import { fetchUser } from '../../toolkit/userSlice';
-import { getuserInfo } from '../service/user';
+import { fetchUser } from '../toolkit/userSlice';
+import { getUserInfo } from '../service/user';
 import { getAuthToken } from '../helpers/localstorage';
 
 const Home = () => {
@@ -16,7 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchUser(getuserInfo));
+      dispatch(fetchUser(getUserInfo));
     }
   }, [dispatch, token]);
   const { posts, loading } = useSelector((state) => state.post);

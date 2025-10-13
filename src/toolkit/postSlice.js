@@ -15,7 +15,9 @@ export const fetchPosts = createAsyncThunk('posts/getPosts', async (func) => {
 export const updatePostById = createAsyncThunk(
   'posts/updatePostById',
   async ({ payload, id, func }) => {
-    await func(payload, id);
+    let response = await func(payload, id);
+    console.log(response);
+    return response.data;
   }
 );
 

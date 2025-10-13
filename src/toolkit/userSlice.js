@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { saveToLocalStorage } from '../src/helpers/localstorage';
+import { saveToLocalStorage } from '../helpers/localstorage';
 const initialState = {
   loading: false,
   user: {

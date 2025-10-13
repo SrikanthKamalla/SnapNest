@@ -4,7 +4,7 @@ export const API_ENDPOINTS = {
   LOG_OUT: '/auth/logout',
   GET_LOGGED_IN_USER_INFO: '/auth/loginUserInfo',
   FILE_UPLOAD: '/post/upload',
-  CREATE_POST: '/post/createpost',
+  CREATE_POST: '/post/createPost',
   GET_POSTS: '/post/getAllPosts',
   GET_MY_POSTS: '/post/myPosts',
   DELETE_POST: (postId) => `/post/deletePost/${postId}`,

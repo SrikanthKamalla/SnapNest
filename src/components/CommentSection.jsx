@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { addComment, deleteComment } from '../service/Comment.js';
 import '../styles/commentSection.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDeleteComment } from '../../toolkit/commentSlice.js';
+import { fetchDeleteComment } from '../toolkit/commentSlice.js';
 
 const CommentSection = ({ postId, comments, handleGetComment }) => {
   const [input, setInput] = useState('');

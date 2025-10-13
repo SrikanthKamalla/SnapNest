@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import BeatLoader from 'react-spinners/BeatLoader';
-import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../toolkit/userSlice';
+import { setUser } from '../toolkit/userSlice';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { userSignUp } from '../service/auth';
 import { saveToLocalStorage } from '../helpers/localstorage';
@@ -77,7 +75,7 @@ const SignUp = () => {
       );
 
       saveToLocalStorage(response?.data?.data?.token);
-      navigate(redirectPath); // Redirect to original target
+      navigate(redirectPath);
     } catch (error) {
       if (error.response?.data?.message) {
         toast.error(error.response.data.message);
@@ -146,7 +144,7 @@ const SignUp = () => {
             className="login-button"
             disabled={isSubmitting}
           >
-            Sign Up
+            {isSubmitting ? 'Signing Up...' : 'Sign Up'}
           </button>
 
           <div className="signup-link">
@@ -161,15 +159,6 @@ const SignUp = () => {
           </div>
         </form>
       </div>
-
-      <Modal
-        isOpen={isSubmitting}
-        contentLabel="Loading"
-        className="login-modal"
-        overlayClassName="login-modal-overlay"
-      >
-        <BeatLoader color="#36d7b7" size={15} />
-      </Modal>
     </div>
   );
 };

@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { fetchUserLogin } from '../../toolkit/userSlice';
+import { fetchUserLogin } from '../toolkit/userSlice';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import LoadingModal from '../components/LoadingModal';
 import '../styles/login.css';
 import { userLogin } from '../service/auth';
 
@@ -68,7 +67,7 @@ const Login = () => {
         if (resultAction.payload.success) {
           toast.success(resultAction.payload.message);
           setLoginUser(initial);
-          navigate(redirectPath); // Redirect to original target
+          navigate(redirectPath);
         } else {
           toast.error(resultAction.payload.message || 'Login failed');
         }
@@ -142,8 +141,6 @@ const Login = () => {
           </div>
         </form>
       </div>
-
-      <LoadingModal isSubmitting={isSubmitting} />
     </div>
   );
 };

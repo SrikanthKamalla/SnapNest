@@ -1,7 +1,7 @@
 import { axiosBaseInstance } from '../axios/instance';
 import { API_ENDPOINTS } from './endpoints';
 
-export const getuserInfo = () =>
+export const getUserInfo = () =>
   axiosBaseInstance.get(API_ENDPOINTS.GET_LOGGED_IN_USER_INFO);
 
 export const updateUser = (payload) =>

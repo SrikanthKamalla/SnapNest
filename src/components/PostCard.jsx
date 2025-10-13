@@ -20,11 +20,7 @@ import { deletePost, likePost, unLikePost } from '../service/post';
 import { useNavigate } from 'react-router-dom';
 import { getCommentsByPostId } from '../service/Comment';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  deletePostById,
-  likePosts,
-  unLikePosts,
-} from '../../toolkit/postSlice';
+import { deletePostById, likePosts, unLikePosts } from '../toolkit/postSlice';
 import { toast } from 'react-toastify';
 
 const feUrl = import.meta.env.VITE_FE_URL;
