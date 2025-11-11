@@ -24,7 +24,7 @@ export const getMyPosts = () =>
   axiosBaseInstance.get(API_ENDPOINTS.GET_MY_POSTS);
 
 export const getPostById = (postId) =>
-  axiosBaseInstance.get(API_ENDPOINTS.GET_BY_POSTID(postId));
+  axiosBaseInstance.get(API_ENDPOINTS.GET_BY_POST_ID(postId));
 
 export const likePost = (postId) =>
   axiosBaseInstance.put(API_ENDPOINTS.LIKE_POST(postId), null);

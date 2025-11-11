@@ -115,7 +115,7 @@
 }
 
 .login-button {
-  padding: 1.25rem 2rem;
+  padding: 0.75rem 1rem;
   background: #2c3e50;
   border: none;
   border-radius: 12px;
@@ -127,7 +127,10 @@
   position: relative;
   overflow: hidden;
   margin-top: 0.5rem;
-  text-transform: uppercase;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: auto;
 }
 
 .login-button::before {
@@ -162,6 +165,7 @@
 .signup-link {
   text-align: center;
   margin-top: 2rem;
+  margin-bottom: 2rem;
   color: rgba(26, 12, 12, 0.8);
   font-size: 0.95rem;
 }

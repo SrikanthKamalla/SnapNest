@@ -6,6 +6,7 @@ import { fetchUserLogin } from '../toolkit/userSlice';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import '../styles/login.css';
 import { userLogin } from '../service/auth';
+import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
   const initial = { email: '', password: '' };
@@ -82,6 +83,10 @@ const Login = () => {
     }
   };
 
+  const loginWithGoogle = () => {
+    window.location.href = 'http://localhost:8000/api/auth/google';
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
@@ -140,6 +145,15 @@ const Login = () => {
             </Link>
           </div>
         </form>
+
+        <button
+          type="submit"
+          className="login-button"
+          onClick={loginWithGoogle}
+        >
+          <FcGoogle />
+          login with Google
+        </button>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { userSignUp } from '../service/auth';
 import { saveToLocalStorage } from '../helpers/localstorage';
 import '../styles/login.css';
+import { FcGoogle } from 'react-icons/fc';
 
 const SignUp = () => {
   const initial = { name: '', email: '', password: '' };
@@ -87,6 +88,10 @@ const SignUp = () => {
     }
   };
 
+  const loginWithGoogle = () => {
+    window.location.href = 'http://localhost:8000/api/auth/google';
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
@@ -158,6 +163,14 @@ const SignUp = () => {
             </Link>
           </div>
         </form>
+        <button
+          type="submit"
+          className="login-button"
+          onClick={loginWithGoogle}
+        >
+          <FcGoogle />
+          Signup with Google
+        </button>
       </div>
     </div>
   );
