@@ -77,11 +77,11 @@ const postSlice = createSlice({
         console.log(action.payload);
         const { posts, page } = action.payload;
 
-        // if (page > 1) {
+        if (page > 1) {
         state.posts = [...state.posts, ...posts];
-        // } else {
-        //   state.posts = posts;
-        // }
+        } else {
+          state.posts = posts;
+        }
         state.hasMore = posts.length > 0;
         state.loading = false;
         state.page = page;
