@@ -5,12 +5,28 @@ const initialState = {
   success: true,
   message: '',
   posts: [],
+  page: 1,
+  hasMore: true,
 };
 
-export const fetchPosts = createAsyncThunk('posts/getPosts', async (func) => {
-  const response = await func();
-  return response.data.data;
-});
+// export const fetchPosts = createAsyncThunk(
+//   'posts/getPosts',
+//   async (func, page = 1) => {
+//     const response = await func(page);
+//     // console.log(response.data.data);
+//     // return response.data.data;
+//     return { posts: response.data.data.posts, page };
+//   }
+// );
+
+export const fetchPosts = createAsyncThunk(
+  'posts/getPosts',
+  async ({ func, page = 1 }) => {
+    const response = await func(page);
+
+    return { posts: response.data.data.posts, page };
+  }
+);
 
 export const updatePostById = createAsyncThunk(
   'posts/updatePostById',
@@ -58,8 +74,17 @@ const postSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
-        state.posts = action.payload.posts;
+        console.log(action.payload);
+        const { posts, page } = action.payload;
+
+        // if (page > 1) {
+        state.posts = [...state.posts, ...posts];
+        // } else {
+        //   state.posts = posts;
+        // }
+        state.hasMore = posts.length > 0;
         state.loading = false;
+        state.page = page;
       })
       .addCase(fetchPosts.rejected, (state) => {
         state.loading = false;

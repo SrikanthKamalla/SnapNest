@@ -15,13 +15,21 @@ export const createPost = (payload) =>
 export const updatePost = (payload, postId) =>
   axiosBaseInstance.put(API_ENDPOINTS.UPDATE_POST(postId), payload);
 
-export const getPost = () => axiosBaseInstance.get(API_ENDPOINTS.GET_POSTS);
+// export const getPost = (page) =>
+//   axiosBaseInstance.get(API_ENDPOINTS.GET_POSTS, page);
+
+export const getPost = (page) =>
+  axiosBaseInstance.get(API_ENDPOINTS.GET_POSTS, {
+    params: { page, limit: 2 },
+  });
 
 export const deletePost = (postId) =>
   axiosBaseInstance.delete(API_ENDPOINTS.DELETE_POST(postId));
 
-export const getMyPosts = () =>
-  axiosBaseInstance.get(API_ENDPOINTS.GET_MY_POSTS);
+export const getMyPosts = (page) =>
+  axiosBaseInstance.get(API_ENDPOINTS.GET_MY_POSTS, {
+    params: { page, limit: 2 },
+  });
 
 export const getPostById = (postId) =>
   axiosBaseInstance.get(API_ENDPOINTS.GET_BY_POST_ID(postId));
