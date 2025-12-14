@@ -20,7 +20,7 @@ export const updatePost = (payload, postId) =>
 
 export const getPost = (page) =>
   axiosBaseInstance.get(API_ENDPOINTS.GET_POSTS, {
-    params: { page, limit: 2 },
+    params: { page, limit: 3 },
   });
 
 export const deletePost = (postId) =>
@@ -28,7 +28,7 @@ export const deletePost = (postId) =>
 
 export const getMyPosts = (page) =>
   axiosBaseInstance.get(API_ENDPOINTS.GET_MY_POSTS, {
-    params: { page, limit: 2 },
+    params: { page, limit: 3 },
   });
 
 export const getPostById = (postId) =>
