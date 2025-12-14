@@ -9,16 +9,6 @@ const initialState = {
   hasMore: true,
 };
 
-// export const fetchPosts = createAsyncThunk(
-//   'posts/getPosts',
-//   async (func, page = 1) => {
-//     const response = await func(page);
-//     // console.log(response.data.data);
-//     // return response.data.data;
-//     return { posts: response.data.data.posts, page };
-//   }
-// );
-
 export const fetchPosts = createAsyncThunk(
   'posts/getPosts',
   async ({ func, page = 1 }) => {
@@ -78,7 +68,7 @@ const postSlice = createSlice({
         const { posts, page } = action.payload;
 
         if (page > 1) {
-        state.posts = [...state.posts, ...posts];
+          state.posts = [...state.posts, ...posts];
         } else {
           state.posts = posts;
         }

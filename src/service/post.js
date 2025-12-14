@@ -15,9 +15,6 @@ export const createPost = (payload) =>
 export const updatePost = (payload, postId) =>
   axiosBaseInstance.put(API_ENDPOINTS.UPDATE_POST(postId), payload);
 
-// export const getPost = (page) =>
-//   axiosBaseInstance.get(API_ENDPOINTS.GET_POSTS, page);
-
 export const getPost = (page) =>
   axiosBaseInstance.get(API_ENDPOINTS.GET_POSTS, {
     params: { page, limit: 3 },

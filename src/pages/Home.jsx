@@ -23,14 +23,12 @@ const Home = () => {
     ? getMyPosts
     : getPost;
 
-  // Fetch user once
   useEffect(() => {
     if (token) {
       dispatch(fetchUser(getUserInfo));
     }
   }, [dispatch, token]);
 
-  // Safe fetch function (prevents duplicate calls)
   const handleFetchPost = useCallback(
     async (pageNumber = 1) => {
       if (isFetchingRef.current) return; 
@@ -51,7 +49,6 @@ const Home = () => {
     handleFetchPost(1);
   }, [fetcherFunction, handleFetchPost, dispatch]);
 
-  // Infinite scroll
   useEffect(() => {
     const onScroll = () => {
       if (
