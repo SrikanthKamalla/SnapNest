@@ -106,11 +106,3 @@ If you run the backend locally, set `VITE_SERVER_URL` to the backend host (examp
 - Profile pages and user info updates
 
 ---
-
-## 🛠 Development Notes & Contributing
-
-- Follow the existing ESLint and Prettier setup; run `npm run lint:fix` and `npm run format` before committing.
-- Add tests and a CI configuration if you add important logic.
-- If you want, add a `LICENSE` file and update this README accordingly.
-
----
